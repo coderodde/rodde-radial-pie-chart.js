@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <radial-pie-chart startAngle="30" maximumRadius="120">
+            <entry color="red" value="100"></entry>
+            <entry color="black" value="120"></entry>
+        </radial-pie-chart>
+        
+        <radial-pie-chart startAngle="45" maximumRadius="90">
+            <entry color="red" value="100"></entry>
+            <entry color="black" value="120"></entry>
+            <entry color="#ff0" value="50"></entry>
+        </radial-pie-chart>
+        
+        <script type="text/javascript" src="rodde-radial-pie-chart.js"></script>
+        
+        <script>
+            function modify() {
+                const chart = document.getElementsByTagName("radial-pie-chart")[1];
+                var entry = document.createElement("entry");
+                entry.setAttribute("color", "orange");
+                entry.setAttribute("value", 70);
+                chart.appendChild(entry);
+                console.log("hello");
+            }
+            
+            setTimeout(modify, 2000);
+        </script>
+    </body>
+</html>
