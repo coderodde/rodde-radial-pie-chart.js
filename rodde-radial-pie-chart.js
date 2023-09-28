@@ -3,11 +3,6 @@
 (function() {
     class RadialPieChart extends HTMLElement {
         
-        #maximumRadius;
-        #startAngle;
-        #emptyRadialPieChartColor;
-        #radialPieChartBackgroundColor;
-        
         constructor() {
             super();
             
@@ -34,30 +29,25 @@
         get startAngle() {
             return this.getAttribute("startAngle") || 0.0;
         }
-        
-        get emptyRadialPieChartColor() {
-            return this.getAttribute("emptyRadialPieChartColor") || "black";
+		
+        get backgroundColor() {
+            return this.getAttribute("backgroundColor") || "white";
         }
         
-        get radialPieChartBackgroundColor() {
-            return this.getAttribute("radialPieChartBackgroundColor") || "white";
-        }
-        
+		get canvasBackgroundColor() {
+			return this.getAttribute("canvasBackgroundColor") || "white";
+		}
+		
         connectedCallback() {
             console.log("connected");
         }   
         
         #drawEntries(canvas, entries) {
-            const maximumRadius                 = this.maximumRadius;
-            const startAngle                    = this.startAngle;
-            const emptyRadialPieChartColor      = this.emptyRadialPieChartColor;
-            const radialPieChartBackgroundColor = this.radialPieChartBackgroundColor;
-            
-            if (entries.length === 0) {
-                this.#fillEmptyChart(canvas, emptyRadialPieChartColor);
-            } else {
-                this.#renderEntries(canvas, entries);
-            }
+			this.#fillEmptyChart(canvas);
+			
+			if (entries.length !== 0) {
+				this.#renderEntries(canvas, entries);
+			}
         }
         
         #fillEmptyChart(canvas, color) {
@@ -66,6 +56,10 @@
             const centerX = width / 2;
             const centerY = height / 2;
             const radius = width / 2;
+			const ctx = canvas.getContext("2d");
+			
+			ctx.fillStyle = this.canvasBackgroundColor;
+			ctx.fillRect(0, 0, width, height);
 
             ctx.beginPath();
             ctx.arc(centerX,
@@ -75,11 +69,12 @@
                     2 * Math.PI, 
                     false);
 
-            ctx.fillStyle = this.emptyRadialPieChartColor;
+            ctx.fillStyle = this.backgroundColor;
             ctx.fill();
         }
         
         #renderEntries(canvas, entries) {
+			this.#fillEmptyChart(canvas, this.backgroundColor);
             const anglePerEntry = 360.0 / entries.length;
             
             for (var i = 0, n = entries.length; i !== n; i++) {
