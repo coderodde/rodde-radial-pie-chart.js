@@ -5,7 +5,7 @@
         
         constructor() {
             super();
-            
+			
             const shadow = this.attachShadow({ mode: "open" });
             const componentContainer = document.createElement("div");
             const radialPieChartCanvas = document.createElement("canvas");
@@ -20,6 +20,29 @@
             
             this.#drawEntries(radialPieChartCanvas, entries);
             shadow.appendChild(componentContainer);
+			
+			// Set the mutation observer:
+			const observerConfig = { 
+				attributes: true, 
+				childList:  true,
+				subtree:    true,
+			};
+			
+			const observerCallback = (mutationList, observer) => {
+				for (const mutation of mutationList) {
+					// If any mutation, just fix and exit.
+					this.#drawEntries(radialPieChartCanvas, entries);
+					break;
+				}	
+			};
+	
+			const pieCharts = document.getElementsByTagName("radial-pie-chart");
+			const observer = new MutationObserver(observerCallback);
+			observer.disconnect();
+			
+			for (var i = 0, n = pieCharts.length; i !== n; i++) {
+				observer.observe(pieCharts[i], observerConfig);
+			}
         }
         
         get maximumRadius() {
@@ -37,10 +60,6 @@
 		get canvasBackgroundColor() {
 			return this.getAttribute("canvasBackgroundColor") || "white";
 		}
-		
-        connectedCallback() {
-            console.log("connected");
-        }   
         
         #drawEntries(canvas, entries) {
 			this.#fillEmptyChart(canvas);
