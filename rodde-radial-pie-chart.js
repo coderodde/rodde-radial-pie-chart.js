@@ -43,6 +43,8 @@
 			for (var i = 0, n = pieCharts.length; i !== n; i++) {
 				observer.observe(pieCharts[i], observerConfig);
 			}
+			
+			observer.observe(document.body, observerConfig);
         }
         
         get maximumRadius() {
@@ -70,6 +72,9 @@
         }
         
         #fillEmptyChart(canvas, color) {
+			canvas.width = 
+			canvas.height = 2 * this.maximumRadius;
+			
             const width = canvas.width;
             const height = canvas.height;
             const centerX = width / 2;

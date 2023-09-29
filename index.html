@@ -23,8 +23,36 @@
                 chart.appendChild(entry);
                 console.log("hello");
             }
-            
-            setTimeout(modify, 3000);
+			
+			function addChart() {
+				var chart = document.createElement("radial-pie-chart");
+				chart.setAttribute("startAngle", 75);
+				chart.setAttribute("maximumRadius", 50);
+				chart.setAttribute("backgroundColor", "#777");
+				chart.setAttribute("canvasBackgroundColor", "#bbb");
+				
+				var entry1 = document.createElement("entry");
+				entry1.setAttribute("color", "orange");
+				entry1.setAttribute("value", 35);
+				
+				var entry2 = document.createElement("entry");
+				entry2.setAttribute("color", "black");
+				entry2.setAttribute("value", 40);
+				
+				chart.appendChild(entry1);
+				chart.appendChild(entry2);
+				
+				document.body.appendChild(chart);
+			}
+			
+			function removeChart() {
+				const chart = document.body.getElementsByTagName("radial-pie-chart")[1];
+				chart.remove();
+			}
+			
+            setTimeout(modify, 2500);
+			setTimeout(addChart, 5000);
+			setTimeout(removeChart, 7500);
         </script>
     </body>
 </html>
